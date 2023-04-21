@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
   std::string FailureToLoadError = "";
   
   sf::Texture BackgroundTexture;
-  if (!BackgroundTexture.loadFromFile("tetris-background.png")) {
+  if (!BackgroundTexture.loadFromFile("images/tetris-background.png")) {
     FailureToLoadError += "Could not load tetris-background.png\n";
   }
   
