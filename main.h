@@ -5,5 +5,6 @@
 #include <iostream>
 #include "string.h"
 #include <SFML/Graphics.hpp>
+#include "game.h"
 
-#endif //MAIN_HEADER
+#endif//MAIN_HEADER
