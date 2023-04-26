@@ -4,15 +4,14 @@
 Tetris::Tetris() : window(sf::VideoMode(600, 1200), "Tetris!") {
   window.setFramerateLimit(30);
   loadTextures();
-  if (FailureToLoadError == "") { // all textures loaded successfully
-    playGame();
-  }
-  else { // one or more textures didn't load
-    std::cout << FailureToLoadError << std::endl;
-  }
 }
 
 void Tetris::playGame() {
+  if (FailureToLoadError != "") {
+    std::cout << FailureToLoadError << std::endl;
+    return;
+  }
+  
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event))

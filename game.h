@@ -12,9 +12,9 @@ using sf::Sprite;
 class Tetris {
 public:
   Tetris();
+  void playGame();
 private:
   void loadTextures();
-  void playGame();
   
   sf::RenderWindow window;
   std::string FailureToLoadError;
