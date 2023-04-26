@@ -30,7 +30,7 @@ private:
   Texture Z; // Z-shaped piece
   Texture J; // J-shaped piece
   Texture L; // L-shaped piece
-  Sprite background;
+  Texture Background;
   Sprite* board [10][23];
 };
 

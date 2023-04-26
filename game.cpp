@@ -12,6 +12,8 @@ void Tetris::playGame() {
     return;
   }
   
+  Sprite background;
+  background.setTexture(Background);
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event))
@@ -26,15 +28,9 @@ void Tetris::playGame() {
 }
 
 void Tetris::loadTextures() {
-  Texture BackgroundTexture;
-  if (!BackgroundTexture.loadFromFile("images/tetris-background.png")) {
+  if (!Background.loadFromFile("images/tetris-background.png")) {
     FailureToLoadError += "Could not load images/tetris-background.png\n";
   }
-  else {
-    background.setTexture(BackgroundTexture);
-  }
-
-
   if (!O.loadFromFile("images/yellow-square.png")) {
     FailureToLoadError += "Could not load images/yellow-square.png\n";
   }
