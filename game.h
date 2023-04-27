@@ -19,6 +19,14 @@ private:
   sf::RenderWindow window;
   std::string FailureToLoadError;
   
+  void makeIPiece();
+  void makeOPiece();
+  void makeTPiece();
+  void makeSPiece();
+  void makeZPiece();
+  void makeJPiece();
+  void makeLPiece();
+  
   /*
      for info on the different pieces
      visit: https://shorturl.at/fgnBV

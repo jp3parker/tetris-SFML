@@ -27,6 +27,34 @@ void Tetris::playGame() {
   }
 }
 
+void Tetris::makeIPiece() {
+  
+}
+
+void Tetris::makeOPiece() {
+
+}
+
+void Tetris::makeTPiece() {
+
+}
+
+void Tetris::makeSPiece() {
+
+}
+
+void Tetris::makeZPiece() {
+
+}
+
+void Tetris::makeJPiece() {
+
+}
+
+void Tetris::makeLPiece() {
+
+}
+
 void Tetris::loadTextures() {
   if (!Background.loadFromFile("images/tetris-background.png")) {
     FailureToLoadError += "Could not load images/tetris-background.png\n";
