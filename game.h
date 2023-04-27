@@ -6,6 +6,11 @@
 #include <SFML/Graphics.hpp>
 #include "string.h"
 
+#define ROWS 20
+#define COLS 10
+
+using std::cout;
+using std::endl;
 using sf::Texture;
 using sf::Sprite;
 
@@ -15,6 +20,7 @@ public:
   void playGame();
 private:
   void loadTextures();
+  void drawSprites();
   
   sf::RenderWindow window;
   std::string FailureToLoadError;
@@ -39,7 +45,8 @@ private:
   Texture J; // J-shaped piece
   Texture L; // L-shaped piece
   Texture Background;
-  Sprite* board [10][23];
+  Sprite background;
+  Sprite* board [ROWS + 3][COLS];
 };
 
 #endif//GAME_HEADER

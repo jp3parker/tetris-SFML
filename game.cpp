@@ -4,6 +4,11 @@
 Tetris::Tetris() : window(sf::VideoMode(600, 1200), "Tetris!") {
   window.setFramerateLimit(30);
   loadTextures();
+  for (int i = 0; i < ROWS + 3; ++i) {
+    for (int j = 0; j < COLS; ++j) {
+      board[i][j] = NULL;
+    }
+  }
 }
 
 void Tetris::playGame() {
@@ -12,18 +17,29 @@ void Tetris::playGame() {
     return;
   }
   
-  Sprite background;
   background.setTexture(Background);
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event))
     {
-      if (event.type == sf::Event::Closed)
+      if (event.type == sf::Event::Closed) {
         window.close();
+      }
     }
     window.clear();
-    window.draw(background);
+    drawSprites();
     window.display();
+  }
+}
+
+void Tetris::drawSprites() {
+  window.draw(background);
+  for (int i = 3; i < ROWS + 3; ++i) {
+    for (int j =  0; j < COLS; ++j) {
+      if (board[i][j] != NULL) {
+        window.draw(*board[i][j]);
+      }
+    }
   }
 }
 

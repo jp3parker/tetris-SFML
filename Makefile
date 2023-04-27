@@ -4,13 +4,13 @@
 # run this code
 
 output: main.o game.o
-	g++ main.o game.o -o output -L /usr/local/Cellar/sfml/2.5.1_2/lib -lsfml-graphics -lsfml-window -lsfml-system
+	g++ -O3 main.o game.o -o output -L /usr/local/Cellar/sfml/2.5.1_2/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 main.o: main.cpp main.h
-	g++ -c main.cpp
+	g++ -c -O3 main.cpp
 
 game.o: game.cpp game.h
-	g++ -c game.cpp
+	g++ -c -O3 game.cpp
 
 clean: 
 	rm *.o output
