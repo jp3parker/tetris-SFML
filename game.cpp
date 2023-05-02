@@ -37,7 +37,7 @@ void Tetris::drawSprites() {
   for (int i = 3; i < ROWS + 3; ++i) {
     for (int j =  0; j < COLS; ++j) {
       if (board[i][j] != NULL) {
-        window.draw(*board[i][j]);
+        window.draw(board[i][j]->sprite);
       }
     }
   }

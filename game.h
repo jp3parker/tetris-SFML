@@ -14,6 +14,11 @@ using std::endl;
 using sf::Texture;
 using sf::Sprite;
 
+struct Square {
+  char typeOfPiece; // either I, O, T, ...
+  Sprite sprite;
+};
+
 class Tetris {
 public:
   Tetris();
@@ -46,7 +51,7 @@ private:
   Texture L; // L-shaped piece
   Texture Background;
   Sprite background;
-  Sprite* board [ROWS + 3][COLS];
+  Square* board [ROWS + 3][COLS];
 };
 
 #endif//GAME_HEADER
