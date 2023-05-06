@@ -16,7 +16,7 @@ void Tetris::playGame() {
     std::cout << FailureToLoadError << std::endl;
     return;
   }
-  
+  makeIPiece();
   background.setTexture(Background);
   while (window.isOpen()) {
     sf::Event event;
@@ -44,6 +44,22 @@ void Tetris::drawSprites() {
 }
 
 void Tetris::makeIPiece() {
+  board[0][COLS / 2] = new Square;
+  board[1][COLS / 2] = new Square;
+  board[2][COLS / 2] = new Square;
+  board[3][COLS / 2] = new Square;
+  board[0][COLS / 2]->typeOfPiece = 'I';
+  board[1][COLS / 2]->typeOfPiece = 'I';
+  board[2][COLS / 2]->typeOfPiece = 'I';
+  board[3][COLS / 2]->typeOfPiece = 'I';
+  board[0][COLS / 2]->sprite.setTexture(I);
+  board[1][COLS / 2]->sprite.setTexture(I);
+  board[2][COLS / 2]->sprite.setTexture(I);
+  board[3][COLS / 2]->sprite.setTexture(I);
+  board[0][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -3);
+  board[1][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -2);
+  board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -1);
+  board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * 0);
   
 }
 

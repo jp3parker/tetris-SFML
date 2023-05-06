@@ -8,6 +8,7 @@
 
 #define ROWS 20
 #define COLS 10
+#define SPRITE_WIDTH 60
 
 using std::cout;
 using std::endl;
