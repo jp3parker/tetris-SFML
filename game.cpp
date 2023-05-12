@@ -16,7 +16,7 @@ void Tetris::playGame() {
     std::cout << FailureToLoadError << std::endl;
     return;
   }
-  makeJPiece();
+  makeLPiece();
   background.setTexture(Background);
   while (window.isOpen()) {
     sf::Event event;
@@ -159,7 +159,22 @@ void Tetris::makeJPiece() {
 }
 
 void Tetris::makeLPiece() {
-
+  board[1][COLS / 2] = new Square;
+  board[2][COLS / 2] = new Square;
+  board[3][COLS / 2] = new Square;
+  board[3][COLS / 2 + 1] = new Square;
+  board[1][COLS / 2]->typeOfPiece = 'L';
+  board[2][COLS / 2]->typeOfPiece = 'L';
+  board[3][COLS / 2]->typeOfPiece = 'L';
+  board[3][COLS / 2 + 1]->typeOfPiece = 'L';
+  board[1][COLS / 2]->sprite.setTexture(L);
+  board[2][COLS / 2]->sprite.setTexture(L);
+  board[3][COLS / 2]->sprite.setTexture(L);
+  board[3][COLS / 2 + 1]->sprite.setTexture(L);
+  board[1][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * -2);
+  board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * -1);
+  board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * 0);
+  board[3][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * 0);
 }
 
 void Tetris::loadTextures() {
