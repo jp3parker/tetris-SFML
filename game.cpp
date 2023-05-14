@@ -16,7 +16,6 @@ void Tetris::playGame() {
     std::cout << FailureToLoadError << std::endl;
     return;
   }
-  makeLPiece();
   background.setTexture(Background);
   while (window.isOpen()) {
     sf::Event event;
