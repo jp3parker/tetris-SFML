@@ -24,6 +24,27 @@ void Tetris::playGame() {
       if (event.type == sf::Event::Closed) {
         window.close();
       }
+      switch (event.key.code) {
+        case sf::Keyboard::Left: {
+          cout << "Left" << endl;
+          break;
+        }
+        case sf::Keyboard::Right: {
+          cout << "Right" << endl;
+          break;
+        }
+        case sf::Keyboard::Up: {
+          cout << "Up" << endl;
+          break;
+        }
+        case sf::Keyboard::Down: {
+          cout << "Down" << endl;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
     }
     window.clear();
     drawSprites();
