@@ -17,38 +17,47 @@ void Tetris::playGame() {
     return;
   }
   background.setTexture(Background);
+  sf::Clock clock;
   while (window.isOpen()) {
     sf::Event event;
-    while (window.pollEvent(event))
-    {
-      if (event.type == sf::Event::Closed) {
-        window.close();
-      }
-      switch (event.key.code) {
-        case sf::Keyboard::Left: {
-          cout << "Left" << endl;
-          break;
+    while (clock.getElapsedTime().asSeconds() < 1) {
+      if (window.pollEvent(event))
+      {
+        if (event.type == sf::Event::Closed) {
+          window.close();
         }
-        case sf::Keyboard::Right: {
-          cout << "Right" << endl;
-          break;
+        switch (event.key.code) {
+          case sf::Keyboard::Left: {
+            cout << "Left" << endl;
+            break;
+          }
+          case sf::Keyboard::Right: {
+            cout << "Right" << endl;
+            break;
+          }
+          case sf::Keyboard::Up: {
+            cout << "Up" << endl;
+            break;
+          }
+          case sf::Keyboard::Down: {
+            cout << "Down" << endl;
+            break;
+          }
+          default: {
+            break;
+          }
         }
-        case sf::Keyboard::Up: {
-          cout << "Up" << endl;
-          break;
-        }
-        case sf::Keyboard::Down: {
-          cout << "Down" << endl;
-          break;
-        }
-        default: {
-          break;
-        }
+        window.clear();
+        drawSprites();
+        window.display();
+        clock.restart();
       }
     }
+    cout << "time ran out" << endl;
     window.clear();
     drawSprites();
     window.display();
+    clock.restart();
   }
 }
 
