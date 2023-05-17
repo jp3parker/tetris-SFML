@@ -28,6 +28,7 @@ public:
 private:
   void loadTextures();
   void drawSprites();
+  void lowerCurrentTetromino();
   
   sf::RenderWindow window;
   std::string FailureToLoadError;

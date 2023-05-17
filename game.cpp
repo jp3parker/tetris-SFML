@@ -61,6 +61,17 @@ void Tetris::playGame() {
   }
 }
 
+void lowerCurrentTetromino() {
+  bool canFall = true;
+  for (int i = ROWS - 1; i >= 0; --i) {
+    for (int j = 0; j < COLS; ++j) {
+//      if (board[i][j]->current = true and canFall and board[i ]) {
+//        
+//      }
+    }
+  }
+}
+
 void Tetris::drawSprites() {
   window.draw(background);
   for (int i = 3; i < ROWS + 3; ++i) {
