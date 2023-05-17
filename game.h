@@ -18,6 +18,7 @@ using sf::Sprite;
 struct Square {
   char typeOfPiece; // either I, O, T, ...
   Sprite sprite;
+  bool current;
 };
 
 class Tetris {

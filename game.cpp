@@ -89,7 +89,10 @@ void Tetris::makeIPiece() {
   board[1][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -2);
   board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * 0);
-  
+  board[0][COLS / 2]->current = true;
+  board[1][COLS / 2]->current = true;
+  board[2][COLS / 2]->current = true;
+  board[3][COLS / 2]->current = true;
 }
 
 void Tetris::makeOPiece() {
@@ -109,6 +112,10 @@ void Tetris::makeOPiece() {
   board[2][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * 0);
   board[3][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * 0);
+  board[2][COLS / 2]->current = true;
+  board[2][COLS / 2 + 1]->current = true;
+  board[3][COLS / 2]->current = true;
+  board[3][COLS / 2 + 1]->current = true;
 }
 
 void Tetris::makeTPiece() {
@@ -128,6 +135,10 @@ void Tetris::makeTPiece() {
   board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * 0);
   board[2][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -1);
+  board[1][COLS / 2]->current = true;
+  board[2][COLS / 2]->current = true;
+  board[3][COLS / 2]->current = true;
+  board[2][COLS / 2 + 1]->current = true;
 }
 
 void Tetris::makeSPiece() {
@@ -147,6 +158,10 @@ void Tetris::makeSPiece() {
   board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * 0);
   board[3][COLS / 2 - 1]->sprite.setPosition(SPRITE_WIDTH * 3, SPRITE_WIDTH * 0);
+  board[2][COLS / 2 + 1]->current = true;
+  board[2][COLS / 2]->current = true;
+  board[3][COLS / 2]->current = true;
+  board[3][COLS / 2 - 1]->current = true;
 }
 
 void Tetris::makeZPiece() {
@@ -166,6 +181,10 @@ void Tetris::makeZPiece() {
   board[2][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -1);
   board[3][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * 0);
   board[3][COLS / 2 + 2]->sprite.setPosition(SPRITE_WIDTH * 6, SPRITE_WIDTH * 0);
+  board[2][COLS / 2]->current = true;
+  board[2][COLS / 2 + 1]->current = true;
+  board[3][COLS / 2 + 1]->current = true;
+  board[3][COLS / 2 + 2]->current = true;
 }
 
 void Tetris::makeJPiece() {
@@ -185,6 +204,10 @@ void Tetris::makeJPiece() {
   board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * 0);
   board[3][COLS / 2 - 1]->sprite.setPosition(SPRITE_WIDTH * 3, SPRITE_WIDTH * 0);
+  board[1][COLS / 2]->current = true;
+  board[2][COLS / 2]->current = true;
+  board[3][COLS / 2]->current = true;
+  board[3][COLS / 2 - 1]->current = true;
 }
 
 void Tetris::makeLPiece() {
@@ -204,6 +227,10 @@ void Tetris::makeLPiece() {
   board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * 0);
   board[3][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * 0);
+  board[1][COLS / 2]->current = true;
+  board[2][COLS / 2]->current = true;
+  board[3][COLS / 2]->current = true;
+  board[3][COLS / 2 + 1]->current = true;
 }
 
 void Tetris::loadTextures() {
