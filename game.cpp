@@ -9,11 +9,6 @@ Tetris::Tetris() : window(sf::VideoMode(600, 1200), "Tetris!") {
       board[i][j] = NULL;
     }
   }
-  currentTetrominoPositions.push_back({ 0, 0 });
-  currentTetrominoPositions.push_back({ 0, 0 });
-  currentTetrominoPositions.push_back({ 0, 0 });
-  currentTetrominoPositions.push_back({ 0, 0 });
-  widthOfCurrentTetromino = 0;
 }
 
 void Tetris::playGame() {
@@ -44,11 +39,13 @@ void Tetris::playGame() {
             switch (event.key.code) {
               case sf::Keyboard::Left: {
                 cout << "Left" << endl;
+                goLeft();
                 drawSprites();
                 break;
               }
               case sf::Keyboard::Right: {
                 cout << "Right" << endl;
+                goRight();
                 drawSprites();
                 break;
               }
@@ -78,34 +75,63 @@ void Tetris::playGame() {
     }
     // time runs out
     cout << "time ran out" << endl;
-    lowerCurrentTetromino();
+    if (window.isOpen())
+      lowerCurrentTetromino();
   }
   cout << "got here" << endl;
 }
 
+void Tetris::goLeft() {
+  
+}
+
+void Tetris::goRight() {
+
+}
+
 void Tetris::lowerCurrentTetromino() {
-  cout << "lowe" << endl;
   bool canLower = true;
-  for (int i = 0; i < widthOfCurrentTetromino; ++i) {
-    int x = currentTetrominoPositions[i][0];
-    int y = currentTetrominoPositions[i][1];
-    if (x + 1 > ROWS + 2 or (canLower and board[x + 1][y] != NULL)) {
-      canLower = false;
+  for (int i = ROWS + 2; i >= 0; --i) {
+    for (int j = 0; j < COLS; ++j) {
+      if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
+        if (canLower and i + 1 < ROWS + 3 and
+        (board[i + 1][j] == NULL or board[i + 1][j]->tetromino->current == true)) {
+          // the current square is lowerable
+        }
+        else {
+          /* either this square is not lowerable or another square on the
+          current tetromino was already deemed not lowerable */
+          canLower = false;
+        }
+      }
     }
   }
   if (canLower) {
-    for (int i = 0; i < 4; ++i) {
-      int x = currentTetrominoPositions[i][0]++;
-      int y = currentTetrominoPositions[i][1];
-      board[x + 1][y] = board[x][y];
-      board[x][y] = NULL;
-      board[x + 1][y]->sprite.move(0, SPRITE_WIDTH);
+    for (int i = ROWS + 2; i >= 0; --i) {
+      for (int j = 0; j < COLS; ++j) {
+        if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
+          board[i][j]->sprite.move(0, SPRITE_WIDTH);
+          board[i + 1][j] = board[i][j];
+          board[i][j] = NULL;
+        }
+      }
     }
   }
-  else {
-    cout << "can't lower" << endl;
-    makeOPiece();
+  else { // can't lower anymore
+    bool stopped = false;
+    for (int i = 0; i < ROWS + 3 and !stopped; ++i) {
+      for (int j = 0; j < COLS; ++j) {
+        if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
+          board[i][j]->tetromino->current = false;
+        }
+      }
+    }
+    makeNewTetromino();
   }
+}
+
+void Tetris::makeNewTetromino() {
+  makeOPiece();
 }
 
 void Tetris::drawSprites() {
@@ -126,6 +152,12 @@ void Tetris::makeIPiece() {
   board[1][COLS / 2] = new Square;
   board[2][COLS / 2] = new Square;
   board[3][COLS / 2] = new Square;
+  Tetromino* t = new Tetromino;
+  t->current = true;
+  board[0][COLS / 2]->tetromino = t;
+  board[1][COLS / 2]->tetromino = t;
+  board[2][COLS / 2]->tetromino = t;
+  board[3][COLS / 2]->tetromino = t;
   board[0][COLS / 2]->typeOfPiece = 'I';
   board[1][COLS / 2]->typeOfPiece = 'I';
   board[2][COLS / 2]->typeOfPiece = 'I';
@@ -138,11 +170,6 @@ void Tetris::makeIPiece() {
   board[1][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -2);
   board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * 0);
-  widthOfCurrentTetromino = 1;
-  currentTetrominoPositions[0] = {3, COLS / 2};
-  currentTetrominoPositions[1] = {2, COLS / 2};
-  currentTetrominoPositions[2] = {1, COLS / 2};
-  currentTetrominoPositions[3] = {0, COLS / 2};
 }
 
 void Tetris::makeOPiece() {
@@ -150,6 +177,12 @@ void Tetris::makeOPiece() {
   board[2][COLS / 2 + 1] = new Square;
   board[3][COLS / 2] = new Square;
   board[3][COLS / 2 + 1] = new Square;
+  Tetromino* t = new Tetromino;
+  t->current = true;
+  board[2][COLS / 2]->tetromino = t;
+  board[2][COLS / 2 + 1]->tetromino = t;
+  board[3][COLS / 2]->tetromino = t;
+  board[3][COLS / 2 + 1]->tetromino = t;
   board[2][COLS / 2]->typeOfPiece = 'O';
   board[2][COLS / 2 + 1]->typeOfPiece = 'O';
   board[3][COLS / 2]->typeOfPiece = 'O';
@@ -162,11 +195,6 @@ void Tetris::makeOPiece() {
   board[2][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * 0);
   board[3][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * 0);
-  widthOfCurrentTetromino = 2;
-  currentTetrominoPositions[0] = {3, COLS / 2};
-  currentTetrominoPositions[1] = {3, COLS / 2 + 1};
-  currentTetrominoPositions[2] = {2, COLS / 2};
-  currentTetrominoPositions[3] = {2, COLS / 2 + 1};
 }
 
 void Tetris::makeTPiece() {
@@ -174,6 +202,12 @@ void Tetris::makeTPiece() {
   board[2][COLS / 2] = new Square;
   board[3][COLS / 2] = new Square;
   board[2][COLS / 2 + 1] = new Square;
+  Tetromino* t = new Tetromino;
+  t->current = true;
+  board[1][COLS / 2]->tetromino = t;
+  board[2][COLS / 2]->tetromino = t;
+  board[3][COLS / 2]->tetromino = t;
+  board[2][COLS / 2 + 1]->tetromino = t;
   board[1][COLS / 2]->typeOfPiece = 'T';
   board[2][COLS / 2]->typeOfPiece = 'T';
   board[3][COLS / 2]->typeOfPiece = 'T';
@@ -186,11 +220,6 @@ void Tetris::makeTPiece() {
   board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * 0);
   board[2][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -1);
-  widthOfCurrentTetromino = 2;
-  currentTetrominoPositions[0] = {3, COLS / 2};
-  currentTetrominoPositions[1] = {2, COLS / 2 + 1};
-  currentTetrominoPositions[3] = {2, COLS / 2};
-  currentTetrominoPositions[2] = {1, COLS / 2};
 }
 
 void Tetris::makeSPiece() {
@@ -198,6 +227,12 @@ void Tetris::makeSPiece() {
   board[2][COLS / 2] = new Square;
   board[3][COLS / 2] = new Square;
   board[3][COLS / 2 - 1] = new Square;
+  Tetromino* t = new Tetromino;
+  t->current = true;
+  board[2][COLS / 2 + 1]->tetromino = t;
+  board[2][COLS / 2]->tetromino = t;
+  board[3][COLS / 2]->tetromino = t;
+  board[3][COLS / 2 - 1]->tetromino = t;
   board[2][COLS / 2 + 1]->typeOfPiece = 'S';
   board[2][COLS / 2]->typeOfPiece = 'S';
   board[3][COLS / 2]->typeOfPiece = 'S';
@@ -210,11 +245,6 @@ void Tetris::makeSPiece() {
   board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * 0);
   board[3][COLS / 2 - 1]->sprite.setPosition(SPRITE_WIDTH * 3, SPRITE_WIDTH * 0);
-  widthOfCurrentTetromino = 3;
-  currentTetrominoPositions[0] = {3, COLS / 2};
-  currentTetrominoPositions[1] = {3, COLS / 2 - 1};
-  currentTetrominoPositions[2] = {2, COLS / 2 + 1};
-  currentTetrominoPositions[3] = {2, COLS / 2};
 }
 
 void Tetris::makeZPiece() {
@@ -222,6 +252,12 @@ void Tetris::makeZPiece() {
   board[2][COLS / 2 + 1] = new Square;
   board[3][COLS / 2 + 1] = new Square;
   board[3][COLS / 2 + 2] = new Square;
+  Tetromino* t = new Tetromino;
+  t->current = true;
+  board[2][COLS / 2]->tetromino = t;
+  board[2][COLS / 2 + 1]->tetromino = t;
+  board[3][COLS / 2 + 1]->tetromino = t;
+  board[3][COLS / 2 + 2]->tetromino = t;
   board[2][COLS / 2]->typeOfPiece = 'Z';
   board[2][COLS / 2 + 1]->typeOfPiece = 'Z';
   board[3][COLS / 2 + 1]->typeOfPiece = 'Z';
@@ -234,11 +270,6 @@ void Tetris::makeZPiece() {
   board[2][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * -1);
   board[3][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * 0);
   board[3][COLS / 2 + 2]->sprite.setPosition(SPRITE_WIDTH * 6, SPRITE_WIDTH * 0);
-  widthOfCurrentTetromino = 3;
-  currentTetrominoPositions[0] = {2, COLS / 2};
-  currentTetrominoPositions[1] = {3, COLS / 2 + 1};
-  currentTetrominoPositions[2] = {3, COLS / 2 + 2};
-  currentTetrominoPositions[3] = {2, COLS / 2 + 1};
 }
 
 void Tetris::makeJPiece() {
@@ -246,6 +277,12 @@ void Tetris::makeJPiece() {
   board[2][COLS / 2] = new Square;
   board[3][COLS / 2] = new Square;
   board[3][COLS / 2 - 1] = new Square;
+  Tetromino* t = new Tetromino;
+  t->current = true;
+  board[1][COLS / 2]->tetromino = t;
+  board[2][COLS / 2]->tetromino = t;
+  board[3][COLS / 2]->tetromino = t;
+  board[3][COLS / 2 - 1]->tetromino = t;
   board[1][COLS / 2]->typeOfPiece = 'J';
   board[2][COLS / 2]->typeOfPiece = 'J';
   board[3][COLS / 2]->typeOfPiece = 'J';
@@ -258,11 +295,6 @@ void Tetris::makeJPiece() {
   board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * 0);
   board[3][COLS / 2 - 1]->sprite.setPosition(SPRITE_WIDTH * 3, SPRITE_WIDTH * 0);
-  widthOfCurrentTetromino = 2;
-  currentTetrominoPositions[0] = {3, COLS / 2};
-  currentTetrominoPositions[1] = {3, COLS / 2 - 1};
-  currentTetrominoPositions[2] = {2, COLS / 2};
-  currentTetrominoPositions[3] = {1, COLS / 2};
 }
 
 void Tetris::makeLPiece() {
@@ -270,6 +302,12 @@ void Tetris::makeLPiece() {
   board[2][COLS / 2] = new Square;
   board[3][COLS / 2] = new Square;
   board[3][COLS / 2 + 1] = new Square;
+  Tetromino* t = new Tetromino;
+  t->current = true;
+  board[1][COLS / 2]->tetromino = t;
+  board[2][COLS / 2]->tetromino = t;
+  board[3][COLS / 2]->tetromino = t;
+  board[3][COLS / 2 + 1]->tetromino = t;
   board[1][COLS / 2]->typeOfPiece = 'L';
   board[2][COLS / 2]->typeOfPiece = 'L';
   board[3][COLS / 2]->typeOfPiece = 'L';
@@ -282,11 +320,6 @@ void Tetris::makeLPiece() {
   board[2][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * -1);
   board[3][COLS / 2]->sprite.setPosition(SPRITE_WIDTH * 4, SPRITE_WIDTH * 0);
   board[3][COLS / 2 + 1]->sprite.setPosition(SPRITE_WIDTH * 5, SPRITE_WIDTH * 0);
-  widthOfCurrentTetromino = 2;
-  currentTetrominoPositions[0] = {3, COLS / 2};
-  currentTetrominoPositions[1] = {3, COLS / 2 + 1};
-  currentTetrominoPositions[2] = {2, COLS / 2};
-  currentTetrominoPositions[3] = {1, COLS / 2};
 }
 
 void Tetris::loadTextures() {

@@ -17,10 +17,14 @@ using std::endl;
 using sf::Texture;
 using sf::Sprite;
 
+struct Tetromino {
+  bool current;
+};
+
 struct Square {
   char typeOfPiece; // either I, O, T, ...
   Sprite sprite;
-  bool current;
+  Tetromino* tetromino;
 };
 
 class Tetris {
@@ -31,14 +35,13 @@ private:
   void loadTextures();
   void drawSprites();
   void lowerCurrentTetromino();
+  void goLeft();
+  void goRight();
   
   sf::RenderWindow window;
   std::string FailureToLoadError;
   
-  int widthOfCurrentTetromino;
-  vector< vector<int> > currentTetrominoPositions;
-  // the squares { i, j } values on the board
-  
+  void makeNewTetromino();
   void makeIPiece();
   void makeOPiece();
   void makeTPiece();
