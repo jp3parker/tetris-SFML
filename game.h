@@ -4,12 +4,14 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include "string.h"
 
 #define ROWS 20
 #define COLS 10
 #define SPRITE_WIDTH 60
 
+using std::vector;
 using std::cout;
 using std::endl;
 using sf::Texture;
@@ -32,6 +34,10 @@ private:
   
   sf::RenderWindow window;
   std::string FailureToLoadError;
+  
+  int widthOfCurrentTetromino;
+  vector< vector<int> > currentTetrominoPositions;
+  // the squares { i, j } values on the board
   
   void makeIPiece();
   void makeOPiece();
