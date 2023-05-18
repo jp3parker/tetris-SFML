@@ -45,19 +45,16 @@ void Tetris::playGame() {
               case sf::Keyboard::Left: {
                 cout << "Left" << endl;
                 drawSprites();
-                clock.restart();
                 break;
               }
               case sf::Keyboard::Right: {
                 cout << "Right" << endl;
                 drawSprites();
-                clock.restart();
                 break;
               }
               case sf::Keyboard::Up: {
                 cout << "Up" << endl;
                 drawSprites();
-                clock.restart();
                 break;
               }
               case sf::Keyboard::Down: {
