@@ -39,6 +39,7 @@ private:
   void lowerCurrentTetromino();
   void goLeft();
   void goRight();
+  void checkToRemoveRows();
   
   sf::RenderWindow window;
   std::string FailureToLoadError;

@@ -13,13 +13,11 @@ Tetris::Tetris() : window(sf::VideoMode(600, 1200), "Tetris!") {
 }
 
 void Tetris::playGame() {
-  cout << "got to play game" << endl;
   if (FailureToLoadError != "") {
     std::cout << FailureToLoadError << std::endl;
     return;
   }
   makeLPiece();
-  cout << "make first piece" << endl;
   background.setTexture(Background);
   sf::Clock clock;
   while (window.isOpen()) {
@@ -32,31 +30,25 @@ void Tetris::playGame() {
         switch (event.type) {
           case sf::Event::Closed: {
             window.close();
-            cout << "window is closed" << endl;
             break;
           }
           case sf::Event::KeyPressed: {
-            cout << "key pressed" << endl;
             switch (event.key.code) {
               case sf::Keyboard::Left: {
-                cout << "Left" << endl;
                 goLeft();
                 drawSprites();
                 break;
               }
               case sf::Keyboard::Right: {
-                cout << "Right" << endl;
                 goRight();
                 drawSprites();
                 break;
               }
               case sf::Keyboard::Up: {
-                cout << "Up" << endl;
                 drawSprites();
                 break;
               }
               case sf::Keyboard::Down: {
-                cout << "Down" << endl;
                 lowerCurrentTetromino();
                 drawSprites();
                 clock.restart();
@@ -75,11 +67,9 @@ void Tetris::playGame() {
       }
     }
     // time runs out
-    cout << "time ran out" << endl;
     if (window.isOpen())
       lowerCurrentTetromino();
   }
-  cout << "got here" << endl;
 }
 
 void Tetris::goLeft() {
@@ -137,7 +127,6 @@ void Tetris::goRight() {
     for (int j = COLS - 1; j >= 0; --j) {
       for (int i = 0; i < ROWS + 3; ++i) {
         if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
-          cout << "j + 1 = " << j + 1 << endl;
           board[i][j]->sprite.move(SPRITE_WIDTH, 0);
           board[i][j + 1] = board[i][j];
           board[i][j] = NULL;
@@ -188,8 +177,13 @@ void Tetris::lowerCurrentTetromino() {
         }
       }
     }
+    checkToRemoveRows();
     makeNewTetromino();
   }
+}
+
+void Tetris::checkToRemoveRows() {
+
 }
 
 void Tetris::makeNewTetromino() {
