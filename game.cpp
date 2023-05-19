@@ -82,16 +82,77 @@ void Tetris::playGame() {
 }
 
 void Tetris::goLeft() {
-  
+  bool canGoLeft = true;
+  for (int i = 0; i < ROWS + 3; ++i) {
+    for (int j = 0; j < COLS; ++j) {
+      if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
+        if (canGoLeft and j - 1 >= 1 and
+        (board[i][j - 1] == NULL or board[i][j - 1]->tetromino->current == true)) {
+          // the current square can go left
+        }
+        else {
+          /* either this square can't go left or another square on the
+          current tetromino was already deemed to not be able to go left */
+          canGoLeft = false;
+        }
+      }
+    }
+  }
+  if (canGoLeft) {
+    for (int j = 0; j < COLS; ++j) {
+      for (int i = 0; i < ROWS + 3; ++i) {
+        if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
+          board[i][j]->sprite.move(-1 * SPRITE_WIDTH, 0);
+          board[i][j - 1] = board[i][j];
+          board[i][j] = NULL;
+        }
+      }
+    }
+  }
+  else {
+    // current tetromino can't go left
+    // do nothing
+  }
 }
 
 void Tetris::goRight() {
-
+  bool canGoRight = true;
+  for (int i = 0; i < ROWS + 3; ++i) {
+    for (int j = COLS - 1; j >= 0; --j) {
+      if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
+        if (canGoRight and j + 1 < COLS and
+        (board[i][j + 1] == NULL or board[i][j + 1]->tetromino->current == true)) {
+          // the current square can go right
+        }
+        else {
+          /* either this square can't go right or another square on the
+          current tetromino was already deemed to not be able to go right */
+          canGoRight = false;
+        }
+      }
+    }
+  }
+  if (canGoRight) {
+    for (int j = COLS - 1; j >= 0; --j) {
+      for (int i = 0; i < ROWS + 3; ++i) {
+        if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
+          cout << "j + 1 = " << j + 1 << endl;
+          board[i][j]->sprite.move(SPRITE_WIDTH, 0);
+          board[i][j + 1] = board[i][j];
+          board[i][j] = NULL;
+        }
+      }
+    }
+  }
+  else {
+    // current tetromino can't go right
+    // do nothing
+  }
 }
 
 void Tetris::lowerCurrentTetromino() {
   bool canLower = true;
-  for (int i = ROWS + 2; i >= 0; --i) {
+  for (int i = 0; i < ROWS + 3; ++i) {
     for (int j = 0; j < COLS; ++j) {
       if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
         if (canLower and i + 1 < ROWS + 3 and
