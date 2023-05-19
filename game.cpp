@@ -183,7 +183,29 @@ void Tetris::lowerCurrentTetromino() {
 }
 
 void Tetris::checkToRemoveRows() {
-
+  for (int i = 0; i < ROWS + 3; ++i) {
+    bool removeRow = true;
+    for (int j = 0; j < COLS and removeRow; ++j) {
+      if (board[i][j] == NULL) {
+        removeRow = false;
+      }
+    }
+    if (removeRow) {
+      for (int j = 0; j < COLS; ++j) {
+        delete board[i][j];
+        board[i][j] = NULL;
+      }
+      for (int x = i - 1; x >= 0; --x) {
+        for (int y = 0; y < COLS; ++y) {
+          if (board[x][y] != NULL) {
+            board[x][y]->sprite.move(0, SPRITE_WIDTH);
+          }
+          board[x + 1][y] = board[x][y];
+          board[x][y] = NULL;
+        }
+      }
+    }
+  }
 }
 
 void Tetris::makeNewTetromino() {
