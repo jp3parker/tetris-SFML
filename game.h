@@ -40,6 +40,7 @@ private:
   void goLeft();
   void goRight();
   void checkToRemoveRows();
+  void rotate();
   
   sf::RenderWindow window;
   std::string FailureToLoadError;

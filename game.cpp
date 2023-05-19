@@ -45,6 +45,7 @@ void Tetris::playGame() {
                 break;
               }
               case sf::Keyboard::Up: {
+                rotate();
                 drawSprites();
                 break;
               }
@@ -70,6 +71,10 @@ void Tetris::playGame() {
     if (window.isOpen())
       lowerCurrentTetromino();
   }
+}
+
+void Tetris::rotate() {
+  
 }
 
 void Tetris::goLeft() {
