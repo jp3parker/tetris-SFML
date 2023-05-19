@@ -3,6 +3,8 @@
 #define GAME_HEADER
 
 #include <iostream>
+#include "stdlib.h"
+#include "time.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "string.h"

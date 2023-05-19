@@ -3,6 +3,7 @@
 
 Tetris::Tetris() : window(sf::VideoMode(600, 1200), "Tetris!") {
   window.setFramerateLimit(30);
+  srand(time(NULL));
   loadTextures();
   for (int i = 0; i < ROWS + 3; ++i) {
     for (int j = 0; j < COLS; ++j) {
@@ -192,7 +193,40 @@ void Tetris::lowerCurrentTetromino() {
 }
 
 void Tetris::makeNewTetromino() {
-  makeOPiece();
+  int randomNum0to6 = rand() % 7;
+  switch (randomNum0to6) {
+    case 0: {
+      makeIPiece();
+      break;
+    }
+    case 1: {
+      makeOPiece();
+      break;
+    }
+    case 2: {
+      makeTPiece();
+      break;
+    }
+    case 3: {
+      makeSPiece();
+      break;
+    }
+    case 4: {
+      makeZPiece();
+      break;
+    }
+    case 5: {
+      makeJPiece();
+      break;
+    }
+    case 6: {
+      makeLPiece();
+      break;
+    }
+    default: {
+      break;
+    }
+  }
 }
 
 void Tetris::drawSprites() {
