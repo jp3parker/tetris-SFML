@@ -5,7 +5,7 @@ Tetris::Tetris() : window(sf::VideoMode(600, 1200), "Tetris!") {
   window.setFramerateLimit(30);
   srand(time(NULL));
   loadTextures();
-  for (int i = 0; i < ROWS + 3; ++i) {
+  for (int i = 0; i < ROWS; ++i) {
     for (int j = 0; j < COLS; ++j) {
       board[i][j] = NULL;
     }
@@ -17,7 +17,7 @@ void Tetris::playGame() {
     std::cout << FailureToLoadError << std::endl;
     return;
   }
-  makeLPiece();
+  makeNewTetromino();
   background.setTexture(Background);
   sf::Clock clock;
   while (window.isOpen()) {
@@ -74,12 +74,69 @@ void Tetris::playGame() {
 }
 
 void Tetris::rotate() {
-  
+  bool canRotate = true;
+  vector<std::pair<int,int> > oldCoords;
+  vector<std::pair<int,int> > newCoords;
+  Tetromino* current;
+  for (int i = 0; i < ROWS and canRotate; ++i) {
+    for (int j = 0; j < COLS; ++j) {
+      if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
+        oldCoords.push_back(make_pair(i, j));
+        current = board[i][j]->tetromino;
+        int x_from_rotation_point = current->rotation_point_x - j;
+        int y_from_rotation_point = current->rotation_point_y - i;
+        int new_i;
+        int new_j;
+        if (x_from_rotation_point >= 1 and y_from_rotation_point >= 1) {
+          new_i = i - x_from_rotation_point;
+          new_j = j + y_from_rotation_point - 1;
+        }
+        else if (x_from_rotation_point <= 0 and y_from_rotation_point >= 1) {
+          new_i = i - x_from_rotation_point;
+          new_j = j + y_from_rotation_point - 1;
+        }
+        else if (x_from_rotation_point <= 0 and y_from_rotation_point <= 0) {
+          new_i = i - x_from_rotation_point;
+          new_j = j + y_from_rotation_point - 1;
+        }
+        else { //x_from_rotation_point >= 1 and y_from_rotation_point <= 0
+          new_i = i - x_from_rotation_point;
+          new_j = j + y_from_rotation_point - 1;
+        }
+        if (!freeSquare(new_i, new_j)) {
+          canRotate = false;
+        }
+        else {
+          newCoords.push_back(make_pair(new_i, new_j));
+        }
+      }
+    }
+  }
+  if (canRotate) {
+    //cout << "got here" << endl;
+    for (int i = 0; i < oldCoords.size(); ++i) {
+      board[newCoords[i].first][newCoords[i].second] = board[oldCoords[i].first][oldCoords[i].second];
+      cout << "gpt here t" << endl;
+      int x_difference = newCoords[i].second - oldCoords[i].second;
+      int y_difference = newCoords[i].first - oldCoords[i].first;
+      board[newCoords[i].first][newCoords[i].second]->sprite.move(x_difference * SPRITE_WIDTH,
+                                                                  y_difference * SPRITE_WIDTH);
+      
+      board[oldCoords[i].first][oldCoords[i].second] = NULL;
+      delete board[oldCoords[i].first][oldCoords[i].second];
+    }
+    cout << endl;
+  }
+  return;
+}
+
+bool Tetris::freeSquare(int i, int j) {
+  return i < ROWS and i >= 0 and j >= 0 and j < COLS and (board[i][j] == NULL or board[i][j]->tetromino->current);
 }
 
 void Tetris::goLeft() {
   bool canGoLeft = true;
-  for (int i = 0; i < ROWS + 3; ++i) {
+  for (int i = 0; i < ROWS; ++i) {
     for (int j = 0; j < COLS; ++j) {
       if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
         if (canGoLeft and j - 1 >= 0 and
@@ -95,15 +152,18 @@ void Tetris::goLeft() {
     }
   }
   if (canGoLeft) {
+    Tetromino* current;
     for (int j = 0; j < COLS; ++j) {
-      for (int i = 0; i < ROWS + 3; ++i) {
+      for (int i = 0; i < ROWS; ++i) {
         if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
           board[i][j]->sprite.move(-1 * SPRITE_WIDTH, 0);
           board[i][j - 1] = board[i][j];
           board[i][j] = NULL;
+          current = board[i][j - 1]->tetromino;
         }
       }
     }
+    --current->rotation_point_x;
   }
   else {
     // current tetromino can't go left
@@ -113,7 +173,7 @@ void Tetris::goLeft() {
 
 void Tetris::goRight() {
   bool canGoRight = true;
-  for (int i = 0; i < ROWS + 3; ++i) {
+  for (int i = 0; i < ROWS; ++i) {
     for (int j = COLS - 1; j >= 0; --j) {
       if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
         if (canGoRight and j + 1 < COLS and
@@ -129,15 +189,18 @@ void Tetris::goRight() {
     }
   }
   if (canGoRight) {
+    Tetromino* current;
     for (int j = COLS - 1; j >= 0; --j) {
-      for (int i = 0; i < ROWS + 3; ++i) {
+      for (int i = 0; i < ROWS; ++i) {
         if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
           board[i][j]->sprite.move(SPRITE_WIDTH, 0);
           board[i][j + 1] = board[i][j];
           board[i][j] = NULL;
+          current = board[i][j + 1]->tetromino;
         }
       }
     }
+    ++current->rotation_point_x;
   }
   else {
     // current tetromino can't go right
@@ -147,12 +210,13 @@ void Tetris::goRight() {
 
 void Tetris::lowerCurrentTetromino() {
   bool canLower = true;
-  for (int i = 0; i < ROWS + 3; ++i) {
+  for (int i = 0; i < ROWS; ++i) {
     for (int j = 0; j < COLS; ++j) {
       if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
-        if (canLower and i + 1 < ROWS + 3 and
+        if (canLower and i + 1 < ROWS and
         (board[i + 1][j] == NULL or board[i + 1][j]->tetromino->current == true)) {
           // the current square is lowerable
+          
         }
         else {
           /* either this square is not lowerable or another square on the
@@ -163,19 +227,23 @@ void Tetris::lowerCurrentTetromino() {
     }
   }
   if (canLower) {
-    for (int i = ROWS + 2; i >= 0; --i) {
+    Tetromino* current;
+    for (int i = ROWS - 1; i >= 0; --i) {
       for (int j = 0; j < COLS; ++j) {
         if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
           board[i][j]->sprite.move(0, SPRITE_WIDTH);
           board[i + 1][j] = board[i][j];
           board[i][j] = NULL;
+          delete board[i][j];
+          current = board[i + 1][j]->tetromino;
         }
       }
     }
+    ++current->rotation_point_y;
   }
   else { // can't lower anymore
     bool stopped = false;
-    for (int i = 0; i < ROWS + 3 and !stopped; ++i) {
+    for (int i = 0; i < ROWS and !stopped; ++i) {
       for (int j = 0; j < COLS; ++j) {
         if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
           board[i][j]->tetromino->current = false;
@@ -188,7 +256,7 @@ void Tetris::lowerCurrentTetromino() {
 }
 
 void Tetris::checkToRemoveRows() {
-  for (int i = 0; i < ROWS + 3; ++i) {
+  for (int i = 0; i < ROWS; ++i) {
     bool removeRow = true;
     for (int j = 0; j < COLS and removeRow; ++j) {
       if (board[i][j] == NULL) {
@@ -214,7 +282,7 @@ void Tetris::checkToRemoveRows() {
 }
 
 void Tetris::makeNewTetromino() {
-  int randomNum0to6 = rand() % 7;
+  int randomNum0to6 = rand() % 1;
   switch (randomNum0to6) {
     case 0: {
       makeIPiece();
@@ -253,7 +321,7 @@ void Tetris::makeNewTetromino() {
 void Tetris::drawSprites() {
   window.clear();
   window.draw(background);
-  for (int i = 3; i < ROWS + 3; ++i) {
+  for (int i = 3; i < ROWS; ++i) {
     for (int j =  0; j < COLS; ++j) {
       if (board[i][j] != NULL) {
         window.draw(board[i][j]->sprite);
@@ -270,6 +338,8 @@ void Tetris::makeIPiece() {
   board[3][COLS / 2] = new Square;
   Tetromino* t = new Tetromino;
   t->current = true;
+  t->rotation_point_y = 2;
+  t->rotation_point_x = COLS / 2;
   board[0][COLS / 2]->tetromino = t;
   board[1][COLS / 2]->tetromino = t;
   board[2][COLS / 2]->tetromino = t;

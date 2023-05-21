@@ -9,11 +9,12 @@
 #include <vector>
 #include "string.h"
 
-#define ROWS 20
+#define ROWS 23
 #define COLS 10
 #define SPRITE_WIDTH 60
 
 using std::vector;
+using std::make_pair;
 using std::cout;
 using std::endl;
 using sf::Texture;
@@ -21,6 +22,8 @@ using sf::Sprite;
 
 struct Tetromino {
   bool current;
+  float rotation_point_x;
+  float rotation_point_y;
 };
 
 struct Square {
@@ -41,9 +44,11 @@ private:
   void goRight();
   void checkToRemoveRows();
   void rotate();
+  bool freeSquare(int, int);
   
   sf::RenderWindow window;
   std::string FailureToLoadError;
+  vector< std::pair<int, int> > currentCoordinates;
   
   void makeNewTetromino();
   void makeIPiece();
