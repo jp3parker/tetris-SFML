@@ -88,20 +88,20 @@ void Tetris::rotate() {
         int new_i;
         int new_j;
         if (x_from_rotation_point >= 1 and y_from_rotation_point >= 1) {
-          new_i = i - x_from_rotation_point;
-          new_j = j + y_from_rotation_point - 1;
+          new_i = current->rotation_point_y - x_from_rotation_point;
+          new_j = current->rotation_point_y + y_from_rotation_point - 1;
         }
         else if (x_from_rotation_point <= 0 and y_from_rotation_point >= 1) {
-          new_i = i - x_from_rotation_point;
-          new_j = j + y_from_rotation_point - 1;
+          new_i = current->rotation_point_y - x_from_rotation_point;
+          new_j = current->rotation_point_y + y_from_rotation_point - 1;
         }
         else if (x_from_rotation_point <= 0 and y_from_rotation_point <= 0) {
-          new_i = i - x_from_rotation_point;
-          new_j = j + y_from_rotation_point - 1;
+          new_i = current->rotation_point_y - x_from_rotation_point;
+          new_j = current->rotation_point_y + y_from_rotation_point - 1;
         }
         else { //x_from_rotation_point >= 1 and y_from_rotation_point <= 0
-          new_i = i - x_from_rotation_point;
-          new_j = j + y_from_rotation_point - 1;
+          new_i = current->rotation_point_y - x_from_rotation_point;
+          new_j = current->rotation_point_y + y_from_rotation_point - 1;
         }
         if (!freeSquare(new_i, new_j)) {
           canRotate = false;
