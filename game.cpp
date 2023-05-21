@@ -89,19 +89,19 @@ void Tetris::rotate() {
         int new_j;
         if (x_from_rotation_point >= 1 and y_from_rotation_point >= 1) {
           new_i = current->rotation_point_y - x_from_rotation_point;
-          new_j = current->rotation_point_y + y_from_rotation_point - 1;
+          new_j = current->rotation_point_x + y_from_rotation_point - 1;
         }
         else if (x_from_rotation_point <= 0 and y_from_rotation_point >= 1) {
           new_i = current->rotation_point_y - x_from_rotation_point;
-          new_j = current->rotation_point_y + y_from_rotation_point - 1;
+          new_j = current->rotation_point_x + y_from_rotation_point - 1;
         }
         else if (x_from_rotation_point <= 0 and y_from_rotation_point <= 0) {
           new_i = current->rotation_point_y - x_from_rotation_point;
-          new_j = current->rotation_point_y + y_from_rotation_point - 1;
+          new_j = current->rotation_point_x + y_from_rotation_point - 1;
         }
         else { //x_from_rotation_point >= 1 and y_from_rotation_point <= 0
           new_i = current->rotation_point_y - x_from_rotation_point;
-          new_j = current->rotation_point_y + y_from_rotation_point - 1;
+          new_j = current->rotation_point_x + y_from_rotation_point - 1;
         }
         if (!freeSquare(new_i, new_j)) {
           canRotate = false;
@@ -113,21 +113,16 @@ void Tetris::rotate() {
     }
   }
   if (canRotate) {
-    //cout << "got here" << endl;
+    vector<Square*> s;
     for (int i = 0; i < oldCoords.size(); ++i) {
-      board[newCoords[i].first][newCoords[i].second] = board[oldCoords[i].first][oldCoords[i].second];
-      cout << "gpt here t" << endl;
-      int x_difference = newCoords[i].second - oldCoords[i].second;
-      int y_difference = newCoords[i].first - oldCoords[i].first;
-      board[newCoords[i].first][newCoords[i].second]->sprite.move(x_difference * SPRITE_WIDTH,
-                                                                  y_difference * SPRITE_WIDTH);
-      
+      s.push_back(board[oldCoords[i].first][oldCoords[i].second]);
       board[oldCoords[i].first][oldCoords[i].second] = NULL;
-      delete board[oldCoords[i].first][oldCoords[i].second];
     }
-    cout << endl;
+    for (int i = 0; i < s.size(); ++i) {
+      board[newCoords[i].first][newCoords[i].second] = s[i];
+      board[newCoords[i].first][newCoords[i].second]->sprite.setPosition(newCoords[i].second * SPRITE_WIDTH, (newCoords[i].first - 3) * SPRITE_WIDTH);
+    }
   }
-  return;
 }
 
 bool Tetris::freeSquare(int i, int j) {
@@ -216,7 +211,6 @@ void Tetris::lowerCurrentTetromino() {
         if (canLower and i + 1 < ROWS and
         (board[i + 1][j] == NULL or board[i + 1][j]->tetromino->current == true)) {
           // the current square is lowerable
-          
         }
         else {
           /* either this square is not lowerable or another square on the
