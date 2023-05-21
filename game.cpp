@@ -73,6 +73,10 @@ void Tetris::playGame() {
   }
 }
 
+int roundClose(float x) {
+  return (x - int(x) < 0.5) ? int(x) : int(x) + 1;
+}
+
 void Tetris::rotate() {
   bool canRotate = true;
   vector<std::pair<int,int> > oldCoords;
@@ -83,26 +87,12 @@ void Tetris::rotate() {
       if (board[i][j] != NULL and board[i][j]->tetromino->current == true) {
         oldCoords.push_back(make_pair(i, j));
         current = board[i][j]->tetromino;
-        int x_from_rotation_point = current->rotation_point_x - j;
-        int y_from_rotation_point = current->rotation_point_y - i;
+        float x_from_rotation_point = current->rotation_point_x - j;
+        float y_from_rotation_point = current->rotation_point_y - i;
         int new_i;
         int new_j;
-        if (x_from_rotation_point >= 1 and y_from_rotation_point >= 1) {
-          new_i = current->rotation_point_y - x_from_rotation_point;
-          new_j = current->rotation_point_x + y_from_rotation_point - 1;
-        }
-        else if (x_from_rotation_point <= 0 and y_from_rotation_point >= 1) {
-          new_i = current->rotation_point_y - x_from_rotation_point;
-          new_j = current->rotation_point_x + y_from_rotation_point - 1;
-        }
-        else if (x_from_rotation_point <= 0 and y_from_rotation_point <= 0) {
-          new_i = current->rotation_point_y - x_from_rotation_point;
-          new_j = current->rotation_point_x + y_from_rotation_point - 1;
-        }
-        else { //x_from_rotation_point >= 1 and y_from_rotation_point <= 0
-          new_i = current->rotation_point_y - x_from_rotation_point;
-          new_j = current->rotation_point_x + y_from_rotation_point - 1;
-        }
+        new_i = roundClose(current->rotation_point_y - x_from_rotation_point);
+        new_j = roundClose(current->rotation_point_x + y_from_rotation_point - 1);
         if (!freeSquare(new_i, new_j)) {
           canRotate = false;
         }
@@ -276,7 +266,7 @@ void Tetris::checkToRemoveRows() {
 }
 
 void Tetris::makeNewTetromino() {
-  int randomNum0to6 = rand() % 1;
+  int randomNum0to6 = rand() % 7;
   switch (randomNum0to6) {
     case 0: {
       makeIPiece();
@@ -359,6 +349,8 @@ void Tetris::makeOPiece() {
   board[3][COLS / 2 + 1] = new Square;
   Tetromino* t = new Tetromino;
   t->current = true;
+  t->rotation_point_y = 3;
+  t->rotation_point_x = COLS / 2 + 1;
   board[2][COLS / 2]->tetromino = t;
   board[2][COLS / 2 + 1]->tetromino = t;
   board[3][COLS / 2]->tetromino = t;
@@ -384,6 +376,8 @@ void Tetris::makeTPiece() {
   board[2][COLS / 2 + 1] = new Square;
   Tetromino* t = new Tetromino;
   t->current = true;
+  t->rotation_point_y = 2.5;
+  t->rotation_point_x = COLS / 2 + 0.5;
   board[1][COLS / 2]->tetromino = t;
   board[2][COLS / 2]->tetromino = t;
   board[3][COLS / 2]->tetromino = t;
@@ -409,6 +403,8 @@ void Tetris::makeSPiece() {
   board[3][COLS / 2 - 1] = new Square;
   Tetromino* t = new Tetromino;
   t->current = true;
+  t->rotation_point_y = 3.5;
+  t->rotation_point_x = COLS / 2 + 0.5;
   board[2][COLS / 2 + 1]->tetromino = t;
   board[2][COLS / 2]->tetromino = t;
   board[3][COLS / 2]->tetromino = t;
@@ -434,6 +430,8 @@ void Tetris::makeZPiece() {
   board[3][COLS / 2 + 2] = new Square;
   Tetromino* t = new Tetromino;
   t->current = true;
+  t->rotation_point_y = 3.5;
+  t->rotation_point_x = COLS / 2 + 1.5;
   board[2][COLS / 2]->tetromino = t;
   board[2][COLS / 2 + 1]->tetromino = t;
   board[3][COLS / 2 + 1]->tetromino = t;
@@ -459,6 +457,8 @@ void Tetris::makeJPiece() {
   board[3][COLS / 2 - 1] = new Square;
   Tetromino* t = new Tetromino;
   t->current = true;
+  t->rotation_point_y = 2.5;
+  t->rotation_point_x = COLS / 2 + 0.5;
   board[1][COLS / 2]->tetromino = t;
   board[2][COLS / 2]->tetromino = t;
   board[3][COLS / 2]->tetromino = t;
@@ -484,6 +484,8 @@ void Tetris::makeLPiece() {
   board[3][COLS / 2 + 1] = new Square;
   Tetromino* t = new Tetromino;
   t->current = true;
+  t->rotation_point_y = 2.5;
+  t->rotation_point_x = COLS / 2 + 0.5;
   board[1][COLS / 2]->tetromino = t;
   board[2][COLS / 2]->tetromino = t;
   board[3][COLS / 2]->tetromino = t;
