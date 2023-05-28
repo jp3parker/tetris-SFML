@@ -43,6 +43,7 @@ private:
   void goLeft();
   void goRight();
   void checkToRemoveRows();
+  void checkIfGameOver();
   void rotate();
   bool freeSquare(int, int);
   
@@ -63,6 +64,7 @@ private:
      for info on the different pieces
      visit: https://shorturl.at/fgnBV
   */
+  bool gameOver;
   Texture I; // Straight piece
   Texture O; // Square piece
   Texture T; // T-shaped piece
