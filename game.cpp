@@ -10,6 +10,7 @@ Tetris::Tetris() : window(sf::VideoMode(600, 1200), "Tetris!") {
       board[i][j] = NULL;
     }
   }
+  gameOver = false;
 }
 
 void Tetris::playGame() {
@@ -24,7 +25,7 @@ void Tetris::playGame() {
     drawSprites();
     clock.restart();
     sf::Event event;
-    while (clock.getElapsedTime().asSeconds() < 1) {
+    while (clock.getElapsedTime().asSeconds() < 1 and !gameOver) {
       if (window.pollEvent(event))
       {
         switch (event.type) {
@@ -66,6 +67,10 @@ void Tetris::playGame() {
           }
         }
       }
+    }
+    // player lost
+    if (gameOver) {
+      window.close();
     }
     // time runs out
     if (window.isOpen())
@@ -235,7 +240,10 @@ void Tetris::lowerCurrentTetromino() {
       }
     }
     checkToRemoveRows();
-    makeNewTetromino();
+    checkIfGameOver();
+    if (!gameOver) {
+      makeNewTetromino();
+    }
   }
 }
 
@@ -261,6 +269,14 @@ void Tetris::checkToRemoveRows() {
           board[x][y] = NULL;
         }
       }
+    }
+  }
+}
+
+void Tetris::checkIfGameOver() {
+  for (int i = 0; i < COLS; ++i) {
+    if (board[3][i] != NULL) {
+      gameOver = true;
     }
   }
 }
