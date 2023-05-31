@@ -18,7 +18,7 @@ If you have a mac, you can use the file manager called Brew to download SFML.
 
 =====================================================
 
-* [Technologies and Libraries:]
+* Technologies and Libraries:
   * Libraries
     * SFML - to deal with sprites, opening/closing windows.
     * time - to seed random number generator "randomly" with time(NULL)
