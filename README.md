@@ -38,6 +38,6 @@ If you have a mac, you can use the file manager called Brew to download SFML.
     where it would still be on the board.
     
 * Things learned
-  * How to deal with SFML. It's super userful and (in hindsight) pretty easy
+  * How to deal with SFML. It's super useful and (in hindsight) pretty easy
     to use after setting up.
   * How to make more realistic games.
