@@ -11,6 +11,7 @@ Tetris::Tetris() : window(sf::VideoMode(600, 1200), "Tetris!") {
     }
   }
   gameOver = false;
+  paused = false;
 }
 
 void Tetris::playGame() {
@@ -56,6 +57,11 @@ void Tetris::playGame() {
                 clock.restart();
                 break;
               }
+              /* adding pause button */
+              case sf::Keyboard::Space: {
+                paused = !paused;
+                break;
+              }
               default: {
                 break;
               }
@@ -83,6 +89,7 @@ int roundClose(float x) {
 }
 
 void Tetris::rotate() {
+  if (paused) return;
   bool canRotate = true;
   vector<std::pair<int,int> > oldCoords;
   vector<std::pair<int,int> > newCoords;
@@ -125,6 +132,7 @@ bool Tetris::freeSquare(int i, int j) {
 }
 
 void Tetris::goLeft() {
+  if (paused) return;
   bool canGoLeft = true;
   for (int i = 0; i < ROWS; ++i) {
     for (int j = 0; j < COLS; ++j) {
@@ -162,6 +170,7 @@ void Tetris::goLeft() {
 }
 
 void Tetris::goRight() {
+  if (paused) return;
   bool canGoRight = true;
   for (int i = 0; i < ROWS; ++i) {
     for (int j = COLS - 1; j >= 0; --j) {
@@ -199,6 +208,7 @@ void Tetris::goRight() {
 }
 
 void Tetris::lowerCurrentTetromino() {
+  if (paused) return;
   bool canLower = true;
   for (int i = 0; i < ROWS; ++i) {
     for (int j = 0; j < COLS; ++j) {

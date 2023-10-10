@@ -65,6 +65,7 @@ private:
      visit: https://shorturl.at/fgnBV
   */
   bool gameOver;
+  bool paused;
   Texture I; // Straight piece
   Texture O; // Square piece
   Texture T; // T-shaped piece
